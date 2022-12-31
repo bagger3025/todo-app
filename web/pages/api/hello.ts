@@ -1,11 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { Client } from "@notionhq/client";
-
-const notion = new Client({ auth: process.env.NOTION_KEY });
-
-const databaseId = process.env.NOTION_DATABASE_ID as string;
+import { notion, databaseId } from "./_notion";
 
 type Data = {
 	ok: boolean;

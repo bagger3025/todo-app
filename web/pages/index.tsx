@@ -17,6 +17,32 @@ async function queryAddItem() {
 	console.log(result);
 }
 
+async function queryDB() {
+	const response = await fetch("/api/second", {
+		method: "POST",
+		cache: "no-cache",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	const result = await response.json();
+	console.log(result);
+}
+
+async function updateDB() {
+	const response = await fetch("/api/third", {
+		method: "POST",
+		cache: "no-cache",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	const result = await response.json();
+	console.log(result);
+}
+
 export default function Home() {
 	return (
 		<>
@@ -29,6 +55,8 @@ export default function Home() {
 			<main className={styles.main}>
 				<div>sdf</div>
 				<button onClick={() => queryAddItem()}>Submit</button>
+				<button onClick={() => queryDB()}>Query</button>
+				<button onClick={() => updateDB()}>Try update DB</button>
 				<input></input>
 			</main>
 		</>
