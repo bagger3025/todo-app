@@ -15,7 +15,7 @@ async function queryAddItem() {
 	console.log(result);
 }
 
-async function updateDB() {
+async function retrievePage() {
 	const response = await fetch("/api/retrievePage", {
 		method: "POST",
 		cache: "no-cache",
@@ -52,7 +52,7 @@ export default function Home() {
 			</Head>
 			<div>sdf</div>
 			<button onClick={() => queryAddItem()}>Submit</button> <br />
-			<button onClick={() => updateDB()}>Try update DB</button> <br />
+			<button onClick={() => retrievePage()}>Retrieve page</button> <br />
 			<button onClick={() => testDB()}> Test DB </button> <br />
 			<input></input>
 		</>

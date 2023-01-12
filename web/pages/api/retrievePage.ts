@@ -15,6 +15,7 @@ export default async function third_handler(
 		const response1 = await notion.databases.query({
 			database_id: databaseId,
 		});
+		console.log(response1);
 		console.log(response1.results[0]);
 		const response = await notion.blocks.children.list({
 			block_id: response1.results[0].id,

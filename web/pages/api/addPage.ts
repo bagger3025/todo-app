@@ -61,6 +61,12 @@ export default async function addPage(
 			// children: ["WOw1", "WOW2"],
 		});
 		console.log(response);
+		if (
+			"properties" in response &&
+			response.properties["이름"].type == "title"
+		) {
+			console.log(response.properties["이름"].title);
+		}
 		console.log("Success! Entry added.");
 		res.status(200).json({ ok: true });
 		return;

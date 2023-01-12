@@ -49,6 +49,23 @@ export default async function testDB(
 
 		console.log("Step 2 finished");
 
+		// 3. update database id to page
+		const r3 = await notion.pages.update({
+			page_id: pageId,
+			properties: {
+				DB_id: {
+					rich_text: [
+						{
+							text: {
+								content: r2.id,
+							},
+						},
+					],
+				},
+			},
+		});
+		console.log(r3);
+
 		// 3. create page in the db
 
 		res.status(200).json({ ok: true });
