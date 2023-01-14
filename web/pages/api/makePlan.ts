@@ -38,7 +38,7 @@ export default async function addPage(
 				},
 			],
 			properties: {
-				Name: {
+				이름: {
 					title: {},
 				},
 			},

@@ -1,3 +1,7 @@
+import {
+	PageObjectResponse,
+	QueryDatabaseResponse,
+} from "@notionhq/client/build/src/api-endpoints";
 import Head from "next/head";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { json } from "stream/consumers";
@@ -58,11 +62,34 @@ async function makePlan(val: string) {
 	console.log(result);
 }
 
+async function getPlan() {
+	const response = await fetch("/api/getPlan", {
+		method: "POST",
+		cache: "no-cache",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	const result: QueryDatabaseResponse | { ok: boolean } = await response.json();
+	console.log(result);
+	const resultArray: PageObjectResponse[] = [];
+	if ("results" in result) {
+		result.results.forEach((ele) => {
+			if ("properties" in ele) {
+				resultArray.push(ele);
+			}
+		});
+	}
+	return resultArray;
+}
+
 export default function Home() {
 	// https://driip.me/7126d5d5-1937-44a8-98ed-f9065a7c35b5
 	const addPageInput = useRef<HTMLInputElement>(null);
 
 	const [loading, setLoading] = useState(false);
+	const [planList, setplanList] = useState<PageObjectResponse[]>([]);
+	const [getPlanLoading, setPlanLoading] = useState(false);
 
 	return (
 		<>
@@ -96,6 +123,29 @@ export default function Home() {
 					<div>Loading</div>
 				)}
 			</form>
+			<ul>
+				{planList.map((ele) => {
+					if ("title" in ele.properties["이름"])
+						return (
+							<li key={ele.id}>{ele.properties["이름"].title[0].plain_text}</li>
+						);
+				})}
+			</ul>
+			{!getPlanLoading ? (
+				<button
+					onClick={() => {
+						setPlanLoading(true);
+						getPlan().then((ele) => {
+							setplanList(ele);
+							setPlanLoading(false);
+						});
+					}}
+				>
+					getPlan
+				</button>
+			) : (
+				<div>Loading</div>
+			)}
 		</>
 	);
 }
