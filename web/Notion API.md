@@ -5,7 +5,7 @@
 ### Body
 
 - parent: {database_id: string}
-- prooperties: {
+- properties: {
   이름: {text: {context: string}}[]
   }
 - children: {

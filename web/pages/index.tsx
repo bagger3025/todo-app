@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { json } from "stream/consumers";
 
 async function queryAddItem() {
 	const response = await fetch("/api/addPage", {
@@ -41,7 +43,27 @@ async function testDB() {
 	console.log(result);
 }
 
+async function makePlan(val: string) {
+	const response = await fetch("/api/makePlan", {
+		method: "POST",
+		cache: "no-cache",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			title: val,
+		}),
+	});
+	const result = await response.json();
+	console.log(result);
+}
+
 export default function Home() {
+	// https://driip.me/7126d5d5-1937-44a8-98ed-f9065a7c35b5
+	const addPageInput = useRef<HTMLInputElement>(null);
+
+	const [loading, setLoading] = useState(false);
+
 	return (
 		<>
 			<Head>
@@ -54,7 +76,26 @@ export default function Home() {
 			<button onClick={() => queryAddItem()}>Submit</button> <br />
 			<button onClick={() => retrievePage()}>Retrieve page</button> <br />
 			<button onClick={() => testDB()}> Test DB </button> <br />
-			<input></input>
+			<form>
+				일정 추가: <input name="wow1" ref={addPageInput}></input>
+				{!loading ? (
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							if (addPageInput.current) {
+								setLoading(true);
+								makePlan(addPageInput.current.value).then((e) =>
+									setLoading(false)
+								);
+							}
+						}}
+					>
+						제출
+					</button>
+				) : (
+					<div>Loading</div>
+				)}
+			</form>
 		</>
 	);
 }
